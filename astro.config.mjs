@@ -6,7 +6,7 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
 	output: 'static',
-	site: 'https://utakata-eco-systems-docs.utakata.workers.dev',
+	site: 'https://utakata-eco-systems-docs.pages.dev',
 	integrations: [
 		starlight({
 			title: 'AI-Agent Friendly EcoSystem',
