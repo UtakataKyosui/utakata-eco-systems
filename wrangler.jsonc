@@ -1,7 +1,13 @@
 {
-    "name": "utakata-eco-systems-docs",
-    "compatibility_date": "2026-03-24",
-    "assets": {
-        "directory": "./dist",
-    }
+  "main": "dist/_worker.js/index.js",
+  "name": "utakata-eco-systems-docs",
+  "compatibility_date": "2026-03-17",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true
+  }
 }

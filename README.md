@@ -2,7 +2,7 @@
 
 [![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
 
-```
+```bash
 npm create astro@latest -- --template starlight
 ```
 
@@ -21,7 +21,7 @@ npm create astro@latest -- --template starlight
 
 Inside of your Astro + Starlight project, you'll see the following folders and files:
 
-```
+```text
 .
 ├── public/
 ├── src/
@@ -56,3 +56,15 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+
+## CI/CD
+
+GitHub Actions workflows are included for build verification and Cloudflare Workers deployment.
+
+- `CI`: runs `pnpm install --frozen-lockfile`, `pnpm run lint` (`Biome + markdownlint`), and `pnpm run build` on pull requests and pushes to `main`
+- `Deploy`: runs only after the `CI` workflow succeeds on `main` and deploys with `wrangler deploy`
+
+Set the following GitHub repository secrets before enabling deployment:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`

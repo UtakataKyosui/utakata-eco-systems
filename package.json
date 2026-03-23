@@ -8,14 +8,21 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "lint": "pnpm run lint:code && pnpm run lint:md",
+    "lint:code": "biome check astro.config.mjs src package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc wrangler.app.jsonc",
+    "lint:md": "markdownlint-cli2 \"README.md\" \"src/content/docs/**/*.md\"",
+    "format": "biome check --write astro.config.mjs src package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc wrangler.app.jsonc",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.1.3",
     "@astrojs/starlight": "^0.38.2",
     "astro": "^6.0.1",
     "sharp": "^0.34.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.8",
+    "markdownlint-cli2": "^0.22.0",
     "wrangler": "^4.76.0"
   }
 }
