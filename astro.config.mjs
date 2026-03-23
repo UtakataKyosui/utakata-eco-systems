@@ -6,8 +6,8 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'UtakataKyosui’s EcoSystem',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
+			title: 'Human And AI-Agent Friendly EcoSystem',
+			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/UtakataKyosui' }],
 			sidebar: [
 				{
 					label: 'ガイド',
