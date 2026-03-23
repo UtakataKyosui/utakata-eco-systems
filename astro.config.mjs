@@ -1,21 +1,15 @@
 // @ts-check
 
-import cloudflare from '@astrojs/cloudflare';
-import mdx from '@astrojs/mdx';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	output: 'server',
-	adapter: cloudflare({
-		configPath: './wrangler.jsonc',
-		prerenderEnvironment: 'node',
-	}),
+	output: 'static',
+	site: 'https://utakata-eco-systems-docs.utakata.workers.dev',
 	integrations: [
 		starlight({
 			title: 'AI-Agent Friendly EcoSystem',
-			prerender: false,
 			routeMiddleware: './src/routeData.ts',
 			social: [
 				{
@@ -38,6 +32,5 @@ export default defineConfig({
 				},
 			],
 		}),
-		mdx(),
 	],
 });

@@ -2,14 +2,24 @@ import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 
 export const onRequest = defineRouteMiddleware((context) => {
 	const route = context.locals.starlightRoute;
+	const slug =
+		route.id ||
+		route.entry?.id ||
+		(context.url.pathname === '/' ? 'index' : undefined);
 
-	if (!route.entry || !route.id) {
+	if (!route.entry || !slug) {
 		return;
 	}
 
-	const imageUrl = new URL(`/og/${route.id}.png`, context.url).toString();
+	if (!context.site) {
+		return;
+	}
+
+	const pageUrl = new URL(context.url.pathname, context.site).toString();
+	const imageUrl = new URL(`/og/${slug}.png`, context.site).toString();
 
 	route.head.push(
+		{ tag: 'meta', attrs: { property: 'og:url', content: pageUrl } },
 		{ tag: 'meta', attrs: { property: 'og:image', content: imageUrl } },
 		{
 			tag: 'meta',
