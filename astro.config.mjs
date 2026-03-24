@@ -3,10 +3,17 @@
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 
+const fallbackSiteUrl = 'https://utakata-eco-systems-docs.pages.dev';
+const configuredSiteUrl =
+	process.env.PUBLIC_SITE_URL ||
+	process.env.SITE_URL ||
+	process.env.CF_PAGES_URL ||
+	fallbackSiteUrl;
+
 // https://astro.build/config
 export default defineConfig({
 	output: 'static',
-	site: 'https://utakata-eco-systems-docs.pages.dev',
+	site: configuredSiteUrl,
 	integrations: [
 		starlight({
 			title: 'AI-Agent Friendly EcoSystem',
