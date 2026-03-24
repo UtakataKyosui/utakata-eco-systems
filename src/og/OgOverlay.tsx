@@ -4,7 +4,6 @@
 type OgOverlayProps = {
 	backgroundSrc: string;
 	description: string;
-	domain: string;
 	lines: string[];
 };
 
@@ -16,8 +15,6 @@ const ENGLISH_LINE_LIMIT = 22;
 const OTHER_LINE_LIMIT = 13;
 const DEFAULT_DESCRIPTION =
 	'AIエージェント時代の実装前提と設計判断をまとめたドキュメント';
-const DEFAULT_DOMAIN = 'utakata-eco-systems-docs.pages.dev';
-
 function clampTitle(lines: string[]) {
 	if (lines.length <= TITLE_MAX_LINES) {
 		return lines;
@@ -80,17 +77,14 @@ export function getOgOverlayProps({
 	title,
 	backgroundSrc,
 	description = DEFAULT_DESCRIPTION,
-	domain = DEFAULT_DOMAIN,
 }: {
 	title: string;
 	backgroundSrc: string;
 	description?: string;
-	domain?: string;
 }): OgOverlayProps {
 	return {
 		backgroundSrc,
 		description,
-		domain,
 		lines: wrapTitle(title),
 	};
 }
@@ -98,7 +92,6 @@ export function getOgOverlayProps({
 export function OgOverlay({
 	backgroundSrc,
 	description,
-	domain,
 	lines,
 }: OgOverlayProps) {
 	const fontSize = lines.length === 1 ? 74 : lines.length === 2 ? 64 : 56;
@@ -177,35 +170,11 @@ export function OgOverlay({
 					height: plateHeight,
 					display: 'flex',
 					borderRadius: 32,
-					overflow: 'hidden',
-					border: '1px solid rgba(255, 255, 255, 0.34)',
-					boxShadow: '0 18px 48px rgba(15, 23, 42, 0.08)',
+					backgroundColor: 'rgba(255, 255, 255, 0.75)',
+					border: '1px solid rgba(255, 255, 255, 0.98)',
+					boxShadow: '0 20px 56px rgba(15, 23, 42, 0.1)',
 				}}
-			>
-				<img
-					src={backgroundSrc}
-					alt=""
-					width={WIDTH}
-					height={HEIGHT}
-					style={{
-						position: 'absolute',
-						left: -plateX - 24,
-						top: -plateY - 24,
-						width: WIDTH + 48,
-						height: HEIGHT + 48,
-						filter: 'blur(20px)',
-						opacity: 0.82,
-					}}
-				/>
-				<div
-					style={{
-						position: 'absolute',
-						inset: 0,
-						display: 'flex',
-						backgroundColor: 'rgba(255, 255, 255, 0.72)',
-					}}
-				/>
-			</div>
+			/>
 			<div
 				style={{
 					position: 'absolute',
@@ -226,7 +195,7 @@ export function OgOverlay({
 						style={{
 							display: 'flex',
 							fontSize,
-							fontWeight: 700,
+							fontWeight: 800,
 							lineHeight: `${lineHeight}px`,
 							letterSpacing: '-0.03em',
 						}}
@@ -243,7 +212,7 @@ export function OgOverlay({
 					top: descriptionY,
 					display: 'flex',
 					justifyContent: 'center',
-					color: '#1e293b',
+					color: '#0f172a',
 					fontSize: 28,
 					fontWeight: 600,
 					letterSpacing: '-0.02em',
@@ -251,20 +220,6 @@ export function OgOverlay({
 				}}
 			>
 				{description}
-			</div>
-			<div
-				style={{
-					position: 'absolute',
-					left: 36,
-					bottom: 12,
-					display: 'flex',
-					color: '#06b6d4',
-					fontSize: 24,
-					fontWeight: 700,
-					letterSpacing: '-0.02em',
-				}}
-			>
-				{domain}
 			</div>
 		</div>
 	);

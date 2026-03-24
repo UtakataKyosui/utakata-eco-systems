@@ -14,9 +14,41 @@ type ReportImage = LoadedImage & {
 	url: string;
 };
 
+type FocusArea = {
+	id: string;
+	label: string;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	panelWidth: number;
+};
+
 const rootDir = process.cwd();
 const ogDir = path.join(rootDir, 'dist', 'og');
 const outputDir = path.join(rootDir, 'artifacts', 'og-check');
+const ogWidth = 1200;
+const ogHeight = 630;
+const focusAreas: FocusArea[] = [
+	{
+		id: 'title',
+		label: 'Title Focus',
+		x: 120,
+		y: 120,
+		width: 960,
+		height: 220,
+		panelWidth: 760,
+	},
+	{
+		id: 'description',
+		label: 'Description Focus',
+		x: 140,
+		y: 360,
+		width: 920,
+		height: 112,
+		panelWidth: 760,
+	},
+];
 
 function resolveChromePath(): string {
 	const candidates = [process.env.CHROME_PATH, process.env.GOOGLE_CHROME_BIN];
@@ -49,8 +81,34 @@ async function collectPngFiles(directory: string): Promise<string[]> {
 
 function createReportHtml(images: ReportImage[]): string {
 	const cards = images
-		.map(
-			(image) => `
+		.map((image) => {
+			const focusPanels = focusAreas
+				.map((area) => {
+					const scale = area.panelWidth / area.width;
+					const panelHeight = Math.round(area.height * scale);
+					return `
+						<section class="focus-card">
+							<p class="focus-label">${area.label}</p>
+							<div
+								class="focus-frame"
+								style="width:${area.panelWidth}px;height:${panelHeight}px;"
+							>
+								<img
+									src="${image.url}"
+									alt="${image.label} ${area.label}"
+									style="
+										width:${Math.round(ogWidth * scale)}px;
+										height:${Math.round(ogHeight * scale)}px;
+										transform: translate(${-Math.round(area.x * scale)}px, ${-Math.round(area.y * scale)}px);
+									"
+								/>
+							</div>
+						</section>
+					`;
+				})
+				.join('');
+
+			return `
 				<section class="card" data-og-card>
 					<div class="meta">
 						<p class="label">${image.label}</p>
@@ -59,9 +117,12 @@ function createReportHtml(images: ReportImage[]): string {
 					<div class="frame">
 						<img src="${image.url}" alt="${image.label}" />
 					</div>
+					<div class="focus-grid">
+						${focusPanels}
+					</div>
 				</section>
-			`
-		)
+			`;
+		})
 		.join('');
 
 	return `<!doctype html>
@@ -98,6 +159,13 @@ function createReportHtml(images: ReportImage[]): string {
 				margin: 0 0 28px;
 				color: #94a3b8;
 				font-size: 18px;
+			}
+			ul.checklist {
+				margin: 0 0 32px;
+				padding-left: 24px;
+				color: #cbd5e1;
+				font-size: 16px;
+				line-height: 1.7;
 			}
 			.grid {
 				display: grid;
@@ -146,12 +214,53 @@ function createReportHtml(images: ReportImage[]): string {
 				border-radius: 16px;
 				box-shadow: 0 24px 80px rgba(15, 23, 42, 0.42);
 			}
+			.focus-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 16px;
+				margin-top: 18px;
+			}
+			.focus-card {
+				min-width: 0;
+			}
+			.focus-label {
+				margin: 0 0 8px;
+				color: #cbd5e1;
+				font-size: 13px;
+				font-weight: 700;
+				letter-spacing: 0.02em;
+				text-transform: uppercase;
+			}
+			.focus-frame {
+				position: relative;
+				max-width: 100%;
+				overflow: hidden;
+				border-radius: 14px;
+				border: 1px solid rgba(148, 163, 184, 0.2);
+				background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.96));
+			}
+			.focus-frame img {
+				max-width: none;
+				height: auto;
+				border-radius: 0;
+				box-shadow: none;
+			}
+			@media (max-width: 1320px) {
+				.focus-grid {
+					grid-template-columns: 1fr;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<main>
 			<h1>OG Check Report</h1>
 			<p class="description">dist/og 配下の生成済みOG画像を、ブラウザ上で確認しやすい形で並べています。</p>
+			<ul class="checklist">
+				<li>タイトルが背景に埋もれず、縮小表示でも読めるか</li>
+				<li>説明文のコントラストが十分で、行間が詰まって見えないか</li>
+				<li>文字の欠け、にじみ、ぼやけがないか</li>
+			</ul>
 			<div class="grid">${cards}</div>
 		</main>
 	</body>
