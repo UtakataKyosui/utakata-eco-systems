@@ -177,11 +177,35 @@ export function OgOverlay({
 					height: plateHeight,
 					display: 'flex',
 					borderRadius: 32,
-					background:
-						'linear-gradient(135deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.34) 100%)',
-					border: '1px solid rgba(255, 255, 255, 0.18)',
+					overflow: 'hidden',
+					border: '1px solid rgba(255, 255, 255, 0.34)',
+					boxShadow: '0 18px 48px rgba(15, 23, 42, 0.08)',
 				}}
-			/>
+			>
+				<img
+					src={backgroundSrc}
+					alt=""
+					width={WIDTH}
+					height={HEIGHT}
+					style={{
+						position: 'absolute',
+						left: -plateX - 24,
+						top: -plateY - 24,
+						width: WIDTH + 48,
+						height: HEIGHT + 48,
+						filter: 'blur(20px)',
+						opacity: 0.82,
+					}}
+				/>
+				<div
+					style={{
+						position: 'absolute',
+						inset: 0,
+						display: 'flex',
+						backgroundColor: 'rgba(255, 255, 255, 0.72)',
+					}}
+				/>
+			</div>
 			<div
 				style={{
 					position: 'absolute',
@@ -193,7 +217,7 @@ export function OgOverlay({
 					alignItems: 'center',
 					justifyContent: 'flex-start',
 					textAlign: 'center',
-					color: '#0f172a',
+					color: '#020617',
 				}}
 			>
 				{lines.map((line) => (
@@ -219,9 +243,9 @@ export function OgOverlay({
 					top: descriptionY,
 					display: 'flex',
 					justifyContent: 'center',
-					color: '#475569',
+					color: '#1e293b',
 					fontSize: 28,
-					fontWeight: 500,
+					fontWeight: 600,
 					letterSpacing: '-0.02em',
 					textAlign: 'center',
 				}}
@@ -234,9 +258,9 @@ export function OgOverlay({
 					left: 36,
 					bottom: 12,
 					display: 'flex',
-					color: '#64748b',
+					color: '#06b6d4',
 					fontSize: 24,
-					fontWeight: 600,
+					fontWeight: 700,
 					letterSpacing: '-0.02em',
 				}}
 			>

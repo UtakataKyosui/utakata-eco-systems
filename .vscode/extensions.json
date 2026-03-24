@@ -1,6 +1,5 @@
 {
     "recommendations": [
-        "astro-build.astro-vscode",
-        "imgildev.vscode-astro-generator"
+        "astro-build.astro-vscode"
     ]
 }
