@@ -63,8 +63,23 @@ GitHub Actions workflows are included for build verification and Cloudflare Work
 
 - `CI`: runs `pnpm install --frozen-lockfile`, `pnpm run lint` (`Biome + markdownlint`), and `pnpm run build` on pull requests and pushes to `main`
 - `Deploy`: runs only after the `CI` workflow succeeds on `main` and deploys with `wrangler deploy`
+- `Sync Reference Docs`: runs on a daily schedule and on manual dispatch, fetches repositories owned by `ECOSYSTEM_OWNER` with the topic `utakata-eco-system`, copies each README into `src/content/docs/reference/*.md`, and commits any generated changes back to `main`
 
 Set the following GitHub repository secrets before enabling deployment:
 
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
+
+Set the following repository secret or variable before enabling reference sync:
+
+- `ECOSYSTEM_SYNC_TOKEN`: recommended for this workflow. It allows the sync job to enumerate repositories you own and read their metadata and README contents. Without it, the script can only fall back to public repositories for the configured owner.
+- `ECOSYSTEM_OWNER`: optional repository variable to override the GitHub owner to inspect. Defaults to the current repository owner.
+- `ECOSYSTEM_TOPIC`: optional repository variable to override the topic filter. Defaults to `utakata-eco-system`.
+
+You can also run the sync locally with:
+
+```bash
+pnpm run sync:reference-docs
+```
+
+The sync implementation lives in TypeScript and is validated by `pnpm run typecheck` in CI and in the sync workflow itself.

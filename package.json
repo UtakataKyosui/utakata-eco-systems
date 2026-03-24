@@ -8,8 +8,10 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "sync:reference-docs": "tsx scripts/sync-reference-docs.ts",
+    "typecheck": "tsc --project tsconfig.scripts.json",
     "lint": "pnpm run lint:code && pnpm run lint:md",
-    "lint:code": "biome check astro.config.mjs src package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc",
+    "lint:code": "biome check astro.config.mjs src scripts package.json biome.json .markdownlint-cli2.jsonc tsconfig.scripts.json wrangler.jsonc",
     "lint:md": "markdownlint-cli2 \"README.md\" \"src/content/docs/**/*.md\"",
     "format": "biome check --write astro.config.mjs src package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc",
     "astro": "astro"
@@ -22,8 +24,11 @@
     "sharp": "^0.34.2"
   },
   "devDependencies": {
+    "@types/node": "^24.5.2",
     "@biomejs/biome": "^2.4.8",
     "markdownlint-cli2": "^0.22.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
     "wrangler": "^4.76.0"
   }
 }

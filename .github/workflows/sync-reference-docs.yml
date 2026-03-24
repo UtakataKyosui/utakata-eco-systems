@@ -1,0 +1,63 @@
+name: Sync Reference Docs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 18 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-reference-docs
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync reference documents
+        env:
+          ECOSYSTEM_OWNER: ${{ vars.ECOSYSTEM_OWNER || github.repository_owner }}
+          ECOSYSTEM_TOPIC: ${{ vars.ECOSYSTEM_TOPIC || 'utakata-eco-system' }}
+          ECOSYSTEM_SYNC_TOKEN: ${{ secrets.ECOSYSTEM_SYNC_TOKEN }}
+        run: pnpm run sync:reference-docs
+
+      - name: Verify generated site
+        run: |
+          pnpm run lint
+          pnpm run typecheck
+          pnpm run build
+
+      - name: Commit and push changes
+        run: |
+          git add src/content/docs/reference
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: sync ecosystem reference"
+          git push
