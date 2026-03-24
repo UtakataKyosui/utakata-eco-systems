@@ -1,7 +1,7 @@
 // @ts-check
 
 import starlight from '@astrojs/starlight';
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 const fallbackSiteUrl = 'https://utakata-eco-systems-docs.pages.dev';
 const configuredSiteUrl =
@@ -14,6 +14,18 @@ const configuredSiteUrl =
 export default defineConfig({
 	output: 'static',
 	site: configuredSiteUrl,
+	fonts: [
+		{
+			name: 'Noto Sans JP',
+			cssVariable: '--font-og-sans',
+			provider: fontProviders.google(),
+			weights: [500, 700],
+			styles: ['normal'],
+			subsets: ['japanese'],
+			formats: ['woff'],
+			optimizedFallbacks: false,
+		},
+	],
 	integrations: [
 		starlight({
 			title: 'AI-Agent Friendly EcoSystem',
