@@ -14,14 +14,15 @@ export function OgOverlay({ description, domain, lines }: OgOverlayProps) {
 	const fontSize = lines.length === 1 ? 74 : lines.length === 2 ? 64 : 56;
 	const lineHeight = fontSize + 18;
 	const titleBlockHeight = lines.length * lineHeight;
-	const contentX = 160;
-	const startY = 276;
-	const plateX = 144;
-	const plateY = startY - fontSize - 54;
-	const plateWidth = 860;
-	const descriptionY = startY + titleBlockHeight + 60;
-	const plateHeight = descriptionY - plateY + 58;
-	const footerY = HEIGHT - 38;
+	const centerX = WIDTH / 2;
+	const titleTopY = 164;
+	const plateX = 120;
+	const plateY = 40;
+	const plateWidth = 960;
+	const plateHeight = (plateWidth * HEIGHT) / WIDTH;
+	const descriptionY = titleTopY + titleBlockHeight + 92;
+	const footerX = 36;
+	const footerY = HEIGHT - 12;
 
 	return (
 		<svg
@@ -86,17 +87,18 @@ export function OgOverlay({ description, domain, lines }: OgOverlayProps) {
 			/>
 
 			{lines.map((line, index) => {
-				const y = startY + index * lineHeight;
+				const y = titleTopY + fontSize + index * lineHeight;
 
 				return (
 					<text
 						key={`${line}-${y}`}
-						x={contentX}
+						x={centerX}
 						y={y}
 						fill="#0f172a"
 						fontSize={fontSize}
 						fontWeight="700"
 						letterSpacing="-0.03em"
+						textAnchor="middle"
 						fontFamily="'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif"
 					>
 						{line}
@@ -105,19 +107,20 @@ export function OgOverlay({ description, domain, lines }: OgOverlayProps) {
 			})}
 
 			<text
-				x={contentX}
+				x={centerX}
 				y={descriptionY}
 				fill="#475569"
 				fontSize="28"
 				fontWeight="500"
 				letterSpacing="-0.02em"
+				textAnchor="middle"
 				fontFamily="'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif"
 			>
 				{description}
 			</text>
 
 			<text
-				x={contentX}
+				x={footerX}
 				y={footerY}
 				fill="#64748b"
 				fontSize="24"
