@@ -8,10 +8,12 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check:og": "tsx scripts/check-og-playwright.ts",
+    "check:og:build": "pnpm run build && pnpm run check:og",
     "lint": "pnpm run lint:code && pnpm run lint:md",
-    "lint:code": "biome check astro.config.mjs src package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc",
+    "lint:code": "biome check astro.config.mjs src scripts package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc",
     "lint:md": "markdownlint-cli2 \"README.md\" \"src/content/docs/**/*.md\"",
-    "format": "biome check --write astro.config.mjs src package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc",
+    "format": "biome check --write astro.config.mjs src scripts package.json biome.json .markdownlint-cli2.jsonc wrangler.jsonc",
     "astro": "astro"
   },
   "dependencies": {
@@ -19,11 +21,17 @@
     "@astrojs/mdx": "^5.0.2",
     "@astrojs/starlight": "^0.38.2",
     "astro": "^6.0.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "sharp": "^0.34.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.8",
+    "@types/node": "^25.5.0",
     "markdownlint-cli2": "^0.22.0",
+    "playwright-core": "^1.58.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
     "wrangler": "^4.76.0"
   }
 }
