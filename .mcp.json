@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "codex": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "codex",
+        "mcp-server"
+      ],
+      "env": {}
+    }
+  }
+}
